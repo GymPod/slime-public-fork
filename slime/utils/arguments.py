@@ -247,9 +247,9 @@ def get_slime_extra_args_provider(add_custom_arguments=None):
                     "You should use this model to create your own custom rollout function, "
                     "and then set this to the path of your custom rollout function. "
                     "The signature of the function should be "
-                    "`def generate_rollout(args, rollout_id, *, evaluation=False) -> list[list[Sample]]`"
+                    "`def generate_rollout(args, rollout_id, data_source, evaluation=False) -> RolloutFnTrainOutput | RolloutFnEvalOutput`"
                     "and within the output sample, you should at least set `tokens`, `response_length`, `reward` "
-                    "and `truncated`."
+                    "and `status`."
                 ),
             )
             parser.add_argument(
@@ -1380,16 +1380,6 @@ def get_slime_extra_args_provider(add_custom_arguments=None):
                 action="store_true",
             )
             parser.add_argument(
-                "--ci-metric-checker-key",
-                type=str,
-                default=None,
-            )
-            parser.add_argument(
-                "--ci-metric-checker-threshold",
-                type=float,
-                default=None,
-            )
-            parser.add_argument(
                 "--ci-save-grad-norm",
                 type=str,
                 default=None,
@@ -1445,7 +1435,7 @@ def _pre_parse_mode():
     registering them twice.  The returned namespace is merged into
     the final ``args`` after Phase 2 parsing.
     """
-    temp_parser = argparse.ArgumentParser(add_help=False)
+    temp_parser = argparse.ArgumentParser(add_help=False, allow_abbrev=False)
     temp_parser.add_argument("--train-backend", type=str, choices=["megatron", "fsdp"], default="megatron")
     temp_parser.add_argument("--debug-rollout-only", action="store_true", default=False)
     temp_parser.add_argument("--debug-train-only", action="store_true", default=False)
