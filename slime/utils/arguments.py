@@ -338,6 +338,30 @@ def get_slime_extra_args_provider(add_custom_arguments=None):
                 ),
             )
 
+            # rollout manager actor arguments
+            parser.add_argument(
+                "--rollout-manager-num-cpus",
+                type=int,
+                default=1,
+                help="Number of CPUs for the rollout manager actor. Note that the rollout manager will do some data processing and should have enough CPU to avoid being the bottleneck.",
+            )
+            parser.add_argument(
+                "--rollout-manager-num-gpus",
+                type=int,
+                default=0,
+                help="Number of GPUs for the rollout manager actor. Note that the rollout manager will do some data processing and should have enough GPU to avoid being the bottleneck.",
+            )
+            parser.add_argument(
+                "--rollout-manager-memory",
+                type=int,
+                default=None,
+            )
+            parser.add_argument(
+                "--rollout-manager-object-store-memory",
+                type=int,
+                default=None,
+            )
+
             # sampling
             parser.add_argument(
                 "--over-sampling-batch-size",
