@@ -24,11 +24,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Check token owner
-        env:
-          GH_TOKEN: ${{ secrets.SYNC_TOKEN }}
-        run: gh api user --jq '.login'
-
       - name: Add upstream remote
         run: |
           git remote add upstream https://github.com/THUDM/slime.git || true
